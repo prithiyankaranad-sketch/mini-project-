@@ -1,0 +1,47 @@
+project_id = "college-event-portal"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+
+[db.seed]
+enabled = false
+sql_paths = []
+
+[auth]
+enabled = true
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173/auth/callback", "http://localhost:5173/reset-password"]
+jwt_expiry = 3600
+enable_signup = true
+minimum_password_length = 12
+password_requirements = "lower_upper_letters_digits_symbols"
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = true
+secure_password_change = true
+max_frequency = "1m"
+
+[auth.rate_limit]
+email_sent = 2
+sign_in_sign_ups = 30
+token_verifications = 30
+
+[functions.issue-certificate]
+verify_jwt = false
+static_files = ["./functions/_shared/NotoSans-Regular.ttf"]
+# Auth is verified with getUser in the handler, not by trusting request payloads.
+
+[functions.deliver-email]
+verify_jwt = false
+# Scheduler bearer secret is verified in the handler; no browser access.

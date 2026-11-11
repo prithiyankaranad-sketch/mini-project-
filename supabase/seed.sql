@@ -1,0 +1,1 @@
+-- Intentionally empty. No mock/demo users, events, statistics, or institutional records.
