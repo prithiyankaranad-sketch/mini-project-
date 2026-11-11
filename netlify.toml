@@ -1,0 +1,28 @@
+# Netlify hosts the Vite frontend only. Backend functions stay on Supabase.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+# History-router deep links must load the SPA. Existing static assets take precedence.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    "Content-Security-Policy" = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co wss://*.supabase.co; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+    "X-Content-Type-Options" = "nosniff"
+    "Referrer-Policy" = "no-referrer"
+    "X-Frame-Options" = "DENY"
+    "Permissions-Policy" = "camera=(self), microphone=(), geolocation=()"
+    "Strict-Transport-Security" = "max-age=31536000"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
